@@ -43,6 +43,18 @@ export class App extends Component {
     );
   };
 
+  componentDidMount() {
+    const getStorageContacts = localStorage.getItem('contacts');
+    if (getStorageContacts) {
+      this.setState({ contacts: JSON.parse(getStorageContacts) });
+    }
+  }
+
+  componentDidUpdate() {
+    const { contacts } = this.state;
+    localStorage.setItem('contacts', JSON.stringify(contacts));
+  }
+
   render() {
     const { contacts, filter } = this.state;
     return (
@@ -56,7 +68,10 @@ export class App extends Component {
 
         <h2>Contacts</h2>
         <Filter filter={filter} onChange={this.changeFilter} />
-        <ContactList contacts={this.getFilteredContacts(contacts, filter)} onDeleteContact={this.deleteContact} />
+        <ContactList
+          contacts={this.getFilteredContacts(contacts, filter)}
+          onDeleteContact={this.deleteContact}
+        />
       </div>
     );
   }
